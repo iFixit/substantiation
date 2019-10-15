@@ -8,6 +8,7 @@ use Substantiation\CallableValidator;
 use Substantiation\PassValidator;
 use Substantiation\FailValidator;
 use Substantiation\RequiredPair;
+use Substantiation\OptionalPair;
 
 /**
  * @template T
@@ -28,4 +29,8 @@ function fail(): FailValidator {
 
 function required($key, $value): RequiredPair {
     return new RequiredPair($key, $value);
+}
+
+function optional($key, $value): OptionalPair {
+    return new OptionalPair($key, $value);
 }
