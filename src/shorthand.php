@@ -7,6 +7,7 @@ namespace Substantiation\Shorthand;
 use Substantiation\CallableValidator;
 use Substantiation\PassValidator;
 use Substantiation\FailValidator;
+use Substantiation\RequiredPair;
 
 /**
  * @template T
@@ -23,4 +24,8 @@ function pass(): PassValidator {
 
 function fail(): FailValidator {
     return new FailValidator();
+}
+
+function required($key, $value): RequiredPair {
+    return new RequiredPair($key, $value);
 }
