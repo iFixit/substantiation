@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Substantiation\Tests;
 
 use Substantiation\CallableValidator;
+use function Substantiation\Shorthand\call;
 
 class CallableValidatorTest extends TestCase
 {
@@ -18,5 +19,10 @@ class CallableValidatorTest extends TestCase
         $validator = new CallableValidator('is_int');
         $result = $validator->validate($this->faker->word);
         $this->assertNone($result);
+    }
+
+    public function testCallShortcut() {
+        $result = call('is_int')->validate($this->faker->randomNumber());
+        $this->assertSome($result);
     }
 }

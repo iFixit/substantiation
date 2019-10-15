@@ -22,6 +22,7 @@
         "psr-4": {
             "Substantiation\\": "src/",
             "Substantiation\\Tests\\": "tests/"
-        }
+        },
+        "files": ["src/shorthand.php"]
     }
 }
