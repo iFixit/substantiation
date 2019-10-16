@@ -6,6 +6,7 @@ namespace Substantiation;
 
 use Substantiation\Validator;
 use Substantiation\PairValidator;
+use Substantiation\MonadLib;
 use Optional\Either;
 use Optional\Option;
 
@@ -29,20 +30,10 @@ class MapValidator implements Validator {
             return Either::none(new ValidationFailure());
         }
 
-        $folded = Either::some([]);
-        foreach ($this->validators as $validator) {
-            $folded = $folded->flatMap(
-                function($validated) use ($data, $validator) {
-                    $value = Option::fromArray($data, $validator->getKey());
-                    return $validator
-                        ->validate($value)
-                        ->map(function($v) use ($validated) {
-                            return array_merge($validated, [$v]);
-                        });
-                }
-            );
-        }
-        return $folded;
+        return MonadLib::sequence(array_map(function($validator) use ($data) {
+            $value = Option::fromArray($data, $validator->getKey());
+            return $validator->validate($value);
+        }, $this->validators));
     }
 
     private function getKeys(): array {
