@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Substantiation\Tests;
 
-use Optional\Either;
 use Substantiation\MapValidator;
 use Substantiation\RequiredPair;
 use Substantiation\OptionalPair;
@@ -17,7 +16,7 @@ class MapValidatorTest extends TestCase
 {
     public function setUp(): void {
         parent::setUp();
-        $this->key = $this->faker->words();
+        $this->key = $this->faker->unique()->words();
         $this->value = $this->faker->words();
     }
 
