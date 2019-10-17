@@ -20,11 +20,18 @@ class ArrayValidatorTest extends TestCase
         $result = $validator->validate($this->faker->words());
         $this->assertSome($result);
     }
+
     public function testInvalidArrayValidation() {
         $validator = new ArrayValidator(call('is_string'));
         $arr = $this->faker->words();
         $arr[] = $this->faker->randomNumber();
         $result = $validator->validate($arr);
+        $this->assertNone($result);
+    }
+
+    public function testNotArrayValidation() {
+        $validator = new ArrayValidator(call('is_string'));
+        $result = $validator->validate($this->faker->randomNumber());
         $this->assertNone($result);
     }
 }

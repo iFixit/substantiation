@@ -6,6 +6,7 @@ namespace Substantiation;
 
 use Substantiation\Validator;
 use Substantiation\MonadLib;
+use Substantiation\ValidationFailure;
 use Optional\Either;
 
 class ArrayValidator implements Validator {
@@ -16,6 +17,10 @@ class ArrayValidator implements Validator {
     }
 
     public function validate($data): Either {
+        if (!is_array($data)) {
+            return Either::none(new ValidationFailure());
+        }
+
         return MonadLib::sequence(array_map(function ($v) {
             return $this->validator->validate($v);
         }, $data));
