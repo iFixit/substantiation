@@ -35,11 +35,6 @@ class UltrashortInterfaceTest extends TestCase {
         ]), [$key => $value]);
     }
 
-    public function testFailOnInvalidArrayEntry() {
-        $this->expectException(InvalidValidatorException::class);
-        var_dump(validator([1 => "is_int", pass()])->validate(34));
-    }
-
     public function testComplexSequentiallyIndexedArray() {
         $this->assertValid(validator([
             optional('abc', fail()),
