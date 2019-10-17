@@ -59,7 +59,8 @@ class RequiredPair implements PairValidator {
              */
             function() {
                 /** @var Either<Option<Data>, ValidationFailure> */
-                return Either::none(new ValidationFailure());
+                return Either::none(new ValidationFailure(
+                 "Key {$this->key} not present"));
             }
         );
     }

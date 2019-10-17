@@ -26,7 +26,8 @@ class CallableValidator implements Validator {
             return Either::some($data);
         } else {
             /** @var Either<Data, ValidationFailure> */
-            return Either::none(new ValidationFailure());
+            return Either::none(new ValidationFailure(
+             "{$this->callable} returned false"));
         }
     }
 }

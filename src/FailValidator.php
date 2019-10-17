@@ -15,6 +15,6 @@ use Optional\Either;
 class FailValidator implements Validator {
     public function validate($data): Either {
         /** @var Either<Data, ValidationFailure> */
-        return Either::none(new ValidationFailure());
+        return Either::none(new ValidationFailure("Forced failure"));
     }
 }

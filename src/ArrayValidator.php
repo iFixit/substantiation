@@ -18,7 +18,7 @@ class ArrayValidator implements Validator {
 
     public function validate($data): Either {
         if (!is_array($data)) {
-            return Either::none(new ValidationFailure());
+            return Either::none(new ValidationFailure("Non-array passed"));
         }
 
         return MonadLib::sequence(array_map(function ($v) {
