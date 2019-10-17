@@ -16,26 +16,26 @@ class MapValidatorTest extends TestCase
 {
     public function setUp(): void {
         parent::setUp();
-        $this->key = $this->faker->unique()->words();
-        $this->value = $this->faker->words();
+        $this->keys = $this->faker->unique()->words();
+        $this->values = $this->faker->words();
     }
 
     public function testValidMapValidation() {
         $validator = new MapValidator(
-            new RequiredPair($this->key[0], pass()),
-            new OptionalPair($this->key[1], fail()),
-            new RequiredPair($this->key[2], pass())
+            new RequiredPair($this->keys[0], pass()),
+            new OptionalPair($this->keys[1], fail()),
+            new RequiredPair($this->keys[2], pass())
         );
         $result = $validator->validate([
-            $this->key[0] => $this->value[0],
-            $this->key[2] => $this->value[2]
+            $this->keys[0] => $this->values[0],
+            $this->keys[2] => $this->values[2]
         ]);
         $this->assertSome($result);
     }
 
     public function testMissingRequiredKeys() {
         $validator = new MapValidator(
-            new RequiredPair($this->key[0], pass())
+            new RequiredPair($this->keys[0], pass())
         );
         $result = $validator->validate([]);
         $this->assertNone($result);
@@ -44,38 +44,38 @@ class MapValidatorTest extends TestCase
     public function testTooManyKeys() {
         $validator = new MapValidator();
         $result = $validator->validate([
-            $this->key[1] => $this->value[1],
-            $this->key[2] => $this->value[2]
+            $this->keys[1] => $this->values[1],
+            $this->keys[2] => $this->values[2]
         ]);
         $this->assertNone($result);
     }
 
     public function testFailValidation() {
         $validator = new MapValidator(
-            required($this->key[1], fail())
+            required($this->keys[1], fail())
         );
         $result = $validator->validate([
-            $this->key[1] => $this->value[1],
+            $this->keys[1] => $this->values[1],
         ]);
         $this->assertNone($result);
     }
 
     public function testFailOptionalValidation() {
         $validator = new MapValidator(
-            optional($this->key[1], fail()),
-            required($this->key[2], pass())
+            optional($this->keys[1], fail()),
+            required($this->keys[2], pass())
         );
         $result = $validator->validate([
-            $this->key[1] => $this->value[1],
-            $this->key[2] => $this->value[2],
+            $this->keys[1] => $this->values[1],
+            $this->keys[2] => $this->values[2],
         ]);
         $this->assertNone($result);
     }
 
     public function testNonMapValidation() {
         $validator = new MapValidator(
-            optional($this->key[1], fail()),
-            required($this->key[2], pass())
+            optional($this->keys[1], fail()),
+            required($this->keys[2], pass())
         );
         $result = $validator->validate($this->faker->randomNumber());
         $this->assertNone($result);
