@@ -23,6 +23,12 @@ class MapValidator implements Validator {
      */
     public function __construct(PairValidator ...$validators) {
         $this->validators = $validators;
+
+        $keys = $this->getKeys();
+        $unique = array_unique($keys);
+        if (count($unique) != count($keys)) {
+            throw new InvalidValidatorException("Duplicate keys");
+        }
     }
 
     public function validate($data): Either {

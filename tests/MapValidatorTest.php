@@ -7,6 +7,7 @@ namespace Substantiation\Tests;
 use Substantiation\MapValidator;
 use Substantiation\RequiredPair;
 use Substantiation\OptionalPair;
+use Substantiation\InvalidValidatorException;
 use function Substantiation\Shorthand\pass;
 use function Substantiation\Shorthand\fail;
 use function Substantiation\Shorthand\required;
@@ -18,6 +19,7 @@ class MapValidatorTest extends TestCase
         parent::setUp();
         $this->keys = $this->faker->unique()->words();
         $this->values = $this->faker->words();
+        $this->key = $this->keys[0];
     }
 
     public function testValidMapValidation() {
@@ -79,5 +81,21 @@ class MapValidatorTest extends TestCase
         );
         $result = $validator->validate($this->faker->randomNumber());
         $this->assertNone($result);
+    }
+
+    public function testNoDuplicateKeys1() {
+        $this->expectException(InvalidValidatorException::class);
+        new MapValidator(
+            required($this->key, pass()),
+            required($this->key, pass())
+        );
+    }
+
+    public function testNoDuplicateKeys2() {
+        $this->expectException(InvalidValidatorException::class);
+        new MapValidator(
+            required($this->key, pass()),
+            optional($this->key, pass())
+        );
     }
 }
