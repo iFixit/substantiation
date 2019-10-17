@@ -25,11 +25,12 @@ class ValidatorParser extends PatternVisitor {
     }
 
     public function sequentialMapKey($key, $value) {
-        $validator = $this->visit($value);
-        if (! $validator instanceof PairValidator) {
-            throw new InvalidValidatorException();
+        if ($value instanceof PairValidator) {
+            return $value;
         }
-        return $validator;
+
+        $validator = $this->visit($value);
+        return new RequiredPair($key, $validator);
     }
 
     public function arbitraryMapKey($key, $value) {

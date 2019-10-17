@@ -58,6 +58,18 @@ class UltrashortInterfaceTest extends TestCase {
         ]);
     }
 
+    public function testMultiValueArray() {
+        $this->assertValid(validator([
+            pass(),
+            pass(),
+            'is_int'
+        ]), [
+            'fish',
+            function() {},
+            42
+        ]);
+    }
+
     private function assertValid(Validator $validator, $data) {
         $this->assertSome($validator->validate($data));
     }
