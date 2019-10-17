@@ -36,9 +36,11 @@ class MapValidator implements Validator {
             return Either::none(new ValidationFailure("Expected a map"));
         }
 
+
         $extraKeys = array_diff(array_keys($data), $this->getKeys());
         if ($extraKeys) {
-            return Either::none(new ValidationFailure(count($extraKeys) . "extra keys"));
+            return Either::none(new ValidationFailure(count($extraKeys) .
+                                                      "extra keys"));
         }
 
         return MonadLib::sequence(array_map(function($validator) use ($data) {
