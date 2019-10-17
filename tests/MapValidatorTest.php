@@ -71,4 +71,13 @@ class MapValidatorTest extends TestCase
         ]);
         $this->assertNone($result);
     }
+
+    public function testNonMapValidation() {
+        $validator = new MapValidator(
+            optional($this->key[1], fail()),
+            required($this->key[2], pass())
+        );
+        $result = $validator->validate($this->faker->randomNumber());
+        $this->assertNone($result);
+    }
 }

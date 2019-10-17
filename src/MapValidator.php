@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Substantiation;
 
 use Substantiation\Validator;
+use Substantiation\ValidationFailure;
 use Substantiation\PairValidator;
 use Substantiation\MonadLib;
 use Optional\Either;
@@ -25,6 +26,10 @@ class MapValidator implements Validator {
     }
 
     public function validate($data): Either {
+        if (!is_array($data)) {
+            return Either::none(new ValidationFailure());
+        }
+
         $extraKeys = array_diff(array_keys($data), $this->getKeys());
         if ($extraKeys) {
             return Either::none(new ValidationFailure());
