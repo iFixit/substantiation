@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Substantiation\Shorthand;
 
+use Substantiation\Validator;
+use Substantiation\ValidatorParser;
 use Substantiation\CallableValidator;
 use Substantiation\PassValidator;
 use Substantiation\FailValidator;
@@ -33,4 +35,13 @@ function required($key, $value): RequiredPair {
 
 function optional($key, $value): OptionalPair {
     return new OptionalPair($key, $value);
+}
+
+/**
+ * @template Data
+ * @param Validator $pattern The pattern to match against
+ * @return Validator<Data>
+ */
+function validator($pattern): Validator {
+    return (new ValidatorParser())->visit($pattern);
 }
