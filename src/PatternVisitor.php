@@ -34,7 +34,8 @@ abstract class PatternVisitor {
             return $this->target($p);
         }
 
-        throw new \RuntimeException("Invalid pattern");
+        $pat = var_export($p, true);
+        throw new \RuntimeException("Invalid pattern: `$pat`");
     }
 
     private function mapPairs(array $p) {
