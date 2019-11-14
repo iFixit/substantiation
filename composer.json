@@ -1,5 +1,5 @@
 {
-    "name": "ifixit/pattern-validator",
+    "name": "ifixit/substantiation",
     "description": "Validate data structures by matching against a pattern of objects.",
     "type": "library",
     "license": "MIT",
