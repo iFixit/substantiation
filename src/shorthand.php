@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Substantiation\Shorthand;
 
+use Optional\Either;
+
 use Substantiation\Validator;
 use Substantiation\ValidatorParser;
 use Substantiation\CallableValidator;
@@ -44,4 +46,12 @@ function optional($key, $value): OptionalPair {
  */
 function validator($pattern): Validator {
     return (new ValidatorParser())->visit($pattern);
+}
+
+function validate($pattern, $value): Either {
+    return validator($pattern)->validate($value);
+}
+
+function valid($pattern, $value): bool {
+    return validate($pattern, $value)->hasValue();
 }
