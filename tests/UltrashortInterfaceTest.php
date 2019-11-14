@@ -22,6 +22,7 @@ class UltrashortInterfaceTest extends TestCase {
         $this->assertInvalid(validator([fail()]), [1]);
         $this->assertInvalid(validator([fail()]), 42);
         $this->assertValid(validator([pass()]), [1]);
+        $this->assertInvalid(validator(['a' => call('is_int')]), 0);
 
         $key = $this->faker->numberBetween();
         $value = $this->faker->word;

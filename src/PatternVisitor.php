@@ -22,7 +22,7 @@ abstract class PatternVisitor {
         }
 
         if (is_array($p)) {
-            if (array_keys($p) == [0]) {
+            if (array_keys($p) === [0]) {
                 return $this->array($p[0]);
             } else {
                 return $this->mapPairs($p);
