@@ -8,6 +8,7 @@ use Substantiation\MapValidator;
 use Substantiation\RequiredPair;
 use Substantiation\OptionalPair;
 use Substantiation\InvalidValidatorException;
+use Substantiation\ValidationFailure;
 use function Substantiation\Shorthand\pass;
 use function Substantiation\Shorthand\fail;
 use function Substantiation\Shorthand\required;
@@ -96,6 +97,23 @@ class MapValidatorTest extends TestCase
         new MapValidator(
             required($this->key, pass()),
             optional($this->key, pass())
+        );
+    }
+
+    public function testMultipleFailures() {
+        $validator = new MapValidator(
+         new RequiredPair('abc', pass()),
+         new OptionalPair('def', fail())
+        );
+        $result = $validator->validate(['def' => 0]);
+        $this->assertOnNone(
+         function($f) {
+             $this->assertEquals([
+                 'abc' => new ValidationFailure("Key abc not present"),
+                 'def' => new ValidationFailure("Forced failure")
+             ], $f);
+         },
+         $result
         );
     }
 }
