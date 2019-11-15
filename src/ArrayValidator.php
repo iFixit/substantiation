@@ -21,8 +21,15 @@ class ArrayValidator implements Validator {
             return Either::none(new ValidationFailure("Non-array passed"));
         }
 
-        return MonadLib::sequence(array_map(function ($v) {
-            return $this->validator->validate($v);
-        }, $data));
+        [$lefts, $rights] = MonadLib::partitionEithersMap(
+         array_map(function ($v) {
+             return $this->validator->validate($v);
+         }, $data)
+        );
+
+        if (count($rights) > 0) {
+           return Either::none($rights);
+        }
+        return Either::some($lefts);
     }
 }
