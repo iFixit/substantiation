@@ -18,6 +18,16 @@ class TestCase extends \PHPUnit\Framework\TestCase {
         self::assertThat($either, self::isNone(), $message);
     }
 
+    public static function assertOnSome($func, $either, $message = '') {
+        self::assertSome($either);
+        $either->matchSome($func);
+    }
+
+    public static function assertOnNone($func, $either, $message = '') {
+        self::assertNone($either);
+        $either->matchNone($func);
+    }
+
     public static function isSome() {
         return new IsSome();
     }

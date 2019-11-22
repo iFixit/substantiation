@@ -43,10 +43,19 @@ class MapValidator implements Validator {
                                                       "extra keys"));
         }
 
-        return MonadLib::sequence(array_map(function($validator) use ($data) {
-            $value = Option::fromArray($data, $validator->getKey());
-            return $validator->validate($value);
-        }, $this->validators));
+        $results = [];
+        foreach ($this->validators as $validator) {
+             $value = Option::fromArray($data, $validator->getKey());
+             $result = $validator->validate($value);
+            $results[$validator->getKey()] = $result;
+        }
+
+        [$lefts, $rights] = MonadLib::partitionEithersMap($results);
+
+        if (count($rights) > 0) {
+            return Either::none($rights);
+        }
+        return Either::some($lefts);
     }
 
     private function getKeys(): array {

@@ -7,6 +7,7 @@ namespace Substantiation\Tests;
 use Substantiation\ArrayValidator;
 use Substantiation\RequiredPair;
 use Substantiation\OptionalPair;
+use Substantiation\ValidationFailure;
 use function Substantiation\Shorthand\call;
 use function Substantiation\Shorthand\pass;
 use function Substantiation\Shorthand\fail;
@@ -33,5 +34,24 @@ class ArrayValidatorTest extends TestCase
         $validator = new ArrayValidator(call('is_string'));
         $result = $validator->validate($this->faker->randomNumber());
         $this->assertNone($result);
+    }
+
+    public function testEmptyArrayValidation() {
+        $validator = new ArrayValidator(fail());
+        $result = $validator->validate([]);
+        $this->assertSome($result);
+    }
+
+    public function testFailureExplanation() {
+        $validator = new ArrayValidator(call('is_int'));
+        $result = $validator->validate([0, 0, 'a', 'b', 0]);
+        $this->assertOnNone(
+         function($f) {
+             $this->assertEquals(
+              [
+               2 => new ValidationFailure("is_int returned false"),
+               3 => new ValidationFailure("is_int returned false")
+              ], $f);
+         }, $result);
     }
 }
